@@ -1,0 +1,18 @@
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:2
+    container_name: uptime-kuma
+    restart: always
+    ports:
+      - "3001:3001"  # This maps the container port "3001" to the host port "3001"
+    volumes:
+      - ./data:/app/data  # Configuring persistent storage
+      - /usr/local/share/ca-certificates:/app/data/docker-tls # self-signed SSL
+    environment:
+      # Self signed certificates
+      NODE_EXTRA_CA_CERTS: /app/data/docker-tls/CA.crt
+    networks:
+      - kuma_network  # add your own custom network config
+networks:
+  kuma_network:
+    external: true
